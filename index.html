@@ -360,6 +360,47 @@
                 animation: confetiFall var(--duration, 2.4s) cubic-bezier(.2,.8,.2,1) var(--delay, 0s) forwards;
             }
 
+        /* --- Mobile-specific adjustments for better readability on phones --- */
+        @media (max-width: 640px) {
+            /* Disable full-page scroll-snap on small screens for easier reading */
+            #presentation-container { scroll-snap-type: none; }
+            .slide { height: auto; min-height: 0; }
+            /* Reduce big intro/title sizes */
+            .intro-title { font-size: 2.2rem; letter-spacing: .06em; }
+            .intro-logo { font-size: 2rem; }
+            .intro-subtitle { font-size: 1rem; }
+
+            /* Slide container adjustments */
+            .slide { padding: 1rem; }
+            .slide-content { max-width: 95%; padding: 0.5rem; flex-direction: column; align-items: flex-start; }
+
+            /* Scale common text utility classes for mobile */
+            .text-7xl { font-size: 2rem !important; }
+            .text-6xl { font-size: 1.75rem !important; }
+            .text-5xl { font-size: 1.6rem !important; }
+            .text-4xl { font-size: 1.35rem !important; }
+            .text-3xl { font-size: 1.2rem !important; }
+            .text-2xl { font-size: 1rem !important; }
+            .text-xl  { font-size: 0.95rem !important; }
+            .text-lg  { font-size: 0.9rem !important; }
+            .text-sm  { font-size: 0.8rem !important; }
+
+            /* Reduce spacing to fit more content */
+            .glass-card { padding: 0.75rem; border-radius: 1rem; }
+
+            /* Make pre/code blocks wrap and smaller font */
+            pre, code { font-size: 0.8rem !important; white-space: pre-wrap; word-break: break-word; }
+
+            /* Stack method boxes and shrink them */
+            .method-box { padding: 0.6rem !important; font-size: 0.9rem !important; }
+
+            /* Ensure images fit and do not overflow */
+            img { max-width: 100%; height: auto; }
+
+            /* Make progress bar thinner on phones */
+            #progress-bar-container { height: 5px; }
+        }
+
     </style>
 </head>
 <body class="bg-slate-900 text-white font-sans antialiased selection:bg-java-orange selection:text-white">
@@ -1282,13 +1323,36 @@ public class ThirdExample {
 
             // --- Slide Index Management and Progress Update ---
             function updateActiveSlide() {
-                // Calculate which slide is currently in view
-                const slideHeight = container.clientHeight;
-                const scrollPosition = container.scrollTop;
-                
-                // Determine the index by dividing scroll position by slide height and rounding to the nearest whole number
-                const index = Math.round(scrollPosition / slideHeight);
-                currentSlideIndex = index;
+                // Mobile-aware active-slide detection.
+                // On large screens we keep the original viewport-per-slide math.
+                // On small screens (mobile) we determine which slide has the largest
+                // visible area inside the container and mark that as active.
+                let index = 0;
+
+                const containerRect = container.getBoundingClientRect();
+
+                if (window.innerWidth <= 640) {
+                    // Choose slide with max visible height inside the container
+                    let maxVisible = -1;
+                    slides.forEach((slide, i) => {
+                        const rect = slide.getBoundingClientRect();
+                        const top = Math.max(rect.top, containerRect.top);
+                        const bottom = Math.min(rect.bottom, containerRect.bottom);
+                        const visibleHeight = Math.max(0, bottom - top);
+                        if (visibleHeight > maxVisible) {
+                            maxVisible = visibleHeight;
+                            index = i;
+                        }
+                    });
+                } else {
+                    // Desktop: use existing snap-based calculation
+                    const slideHeight = container.clientHeight;
+                    const scrollPosition = container.scrollTop;
+                    index = Math.round(scrollPosition / slideHeight);
+                }
+
+                // Clamp index
+                currentSlideIndex = Math.max(0, Math.min(index, slides.length - 1));
 
                 // 1. Update Progress Bar
                 const progressPercentage = ((currentSlideIndex + 1) / slides.length) * 100;
@@ -1296,23 +1360,19 @@ public class ThirdExample {
 
                 // 2. Update Active State for Animation
                 slides.forEach((slide, i) => {
-                    // Set data-active="true" only on the current slide to trigger CSS animation
                     slide.setAttribute('data-active', i === currentSlideIndex ? 'true' : 'false');
                 });
 
                 // 3. Update Navigation Button Visibility/Opacity
-                // Hide the UP button on the first slide
                 navUp.classList.toggle('opacity-0', currentSlideIndex === 0);
                 navUp.classList.toggle('pointer-events-none', currentSlideIndex === 0);
-
-                // Hide the DOWN button on the last slide
                 navDown.classList.toggle('opacity-0', currentSlideIndex === slides.length - 1);
                 navDown.classList.toggle('pointer-events-none', currentSlideIndex === slides.length - 1);
 
-                    // 4. Trigger Confetti on Q&A Slide (Last Slide)
-                    if (currentSlideIndex === slides.length - 1) {
-                        triggerConfetti();
-                    }
+                // 4. Trigger Confetti on Q&A Slide (Last Slide)
+                if (currentSlideIndex === slides.length - 1) {
+                    triggerConfetti();
+                }
             }
 
             // Listen for scroll events to keep the progress bar, active state, and buttons updated
