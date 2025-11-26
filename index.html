@@ -245,27 +245,91 @@
         /* --- Code Block Placeholder Style --- */
         .code-placeholder {
             font-family: 'Fira Code', monospace;
-            background-color: #1e1e1e;
+            background: linear-gradient(135deg, #1e1e1e 0%, #252526 100%);
             border-left: 4px solid #f89820;
-            color: #d4d4d4;
-            padding: 2rem;
             border-radius: 0.5rem;
+            color: #d4d4d4;
+            padding: 0;
             width: 100%;
             text-align: left;
             position: relative;
+            overflow: auto;
+            white-space: pre;
+            word-wrap: normal;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(248, 152, 32, 0.2);
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0.5rem;
         }
         
         .code-placeholder::before {
             content: "Java Source File";
-            position: absolute;
+            position: sticky;
             top: 0;
             right: 0;
-            background: #f89820;
-            color: #000;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
+            background: linear-gradient(90deg, #f89820 0%, #ff6b1a 100%);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 0.5rem 0.8rem;
             border-bottom-left-radius: 0.5rem;
-            font-weight: bold;
+            font-weight: 700;
+            z-index: 10;
+            display: block;
+            float: right;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .code-wrapper .copy-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #f89820 0%, #ff6b1a 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(248, 152, 32, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: fit-content;
+        }
+
+        .code-wrapper .copy-button:hover {
+            background: linear-gradient(135deg, #ff6b1a 0%, #f89820 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(248, 152, 32, 0.5);
+        }
+
+        .code-wrapper .copy-button:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 8px rgba(248, 152, 32, 0.3);
+        }
+
+        .code-wrapper .copy-button.copied {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .code-placeholder pre {
+            margin: 0;
+            padding: 2rem;
+            overflow: inherit;
+            flex: 1;
         }
 
         /* Table specific styles for Slide 21 */
@@ -278,6 +342,30 @@
         .control-table td {
             padding: 1rem;
             border-bottom: 1px solid #4a5568;
+        }
+
+        /* Mobile table scrollability */
+        @media (max-width: 640px) {
+            .overflow-hidden {
+                overflow-y: auto !important;
+                max-height: 60vh;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Stack code example slides vertically on mobile */
+            .grid.grid-cols-2 {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Ensure code placeholders are full width and properly sized on mobile */
+            .code-placeholder {
+                max-height: 400px;
+                margin-top: 2rem;
+            }
         }
 
         /* --- Glowing Method Control Boxes --- */
@@ -560,14 +648,14 @@
                         </div>
                     </div>
                     <!-- Placeholder for Code -->
-                    <div class="code-placeholder h-[500px] flex items-center justify-center flex-col" data-code-file="FirstExample.java">
-                        <button class="copy-button" title="Copy code">
+                    <div class="code-wrapper">
+                        <div class="code-placeholder h-[500px]" data-code-file="FirstExample.java">
+                            <pre id="code-FirstExample.java"></pre>
+                        </div>
+                        <button class="copy-button" title="Copy code" data-code-file="FirstExample.java">
                             <i class="fa-solid fa-copy"></i>
-                            Copy
+                            Copy Code
                         </button>
-                        <i class="fa-solid fa-code text-6xl text-slate-600 mb-4"></i>
-                        <h3 class="text-2xl text-slate-500 font-bold">FirstExample.java</h3>
-                        <p class="text-slate-600">Full <code>FirstExample</code> code placeholder.</p>
                     </div>
                 </div>
             </div>
@@ -641,14 +729,14 @@
                         </div>
                     </div>
                     <!-- Placeholder for Code -->
-                    <div class="code-placeholder h-[500px] flex items-center justify-center flex-col" data-code-file="SecondExample.java">
-                        <button class="copy-button" title="Copy code">
+                    <div class="code-wrapper">
+                        <div class="code-placeholder h-[500px]" data-code-file="SecondExample.java">
+                            <pre id="code-SecondExample.java"></pre>
+                        </div>
+                        <button class="copy-button" title="Copy code" data-code-file="SecondExample.java">
                             <i class="fa-solid fa-copy"></i>
-                            Copy
+                            Copy Code
                         </button>
-                        <i class="fa-solid fa-code text-6xl text-slate-600 mb-4"></i>
-                        <h3 class="text-2xl text-slate-500 font-bold">SecondExample.java</h3>
-                        <p class="text-slate-600">Full <code>SecondExample</code> code placeholder.</p>
                     </div>
                 </div>
             </div>
@@ -744,14 +832,14 @@
                         </div>
                     </div>
                     <!-- Placeholder for Code -->
-                    <div class="code-placeholder h-[500px] flex items-center justify-center flex-col" data-code-file="ThirdExample.java">
-                        <button class="copy-button" title="Copy code">
+                    <div class="code-wrapper">
+                        <div class="code-placeholder h-[500px]" data-code-file="ThirdExample.java">
+                            <pre id="code-ThirdExample.java"></pre>
+                        </div>
+                        <button class="copy-button" title="Copy code" data-code-file="ThirdExample.java">
                             <i class="fa-solid fa-copy"></i>
-                            Copy
+                            Copy Code
                         </button>
-                        <i class="fa-solid fa-code text-6xl text-slate-600 mb-4"></i>
-                        <h3 class="text-2xl text-slate-500 font-bold">ThirdExample.java</h3>
-                        <p class="text-slate-600">Full <code>ThirdExample</code> code placeholder.</p>
                     </div>
                 </div>
             </div>
@@ -1296,9 +1384,8 @@ public class ThirdExample {
                         e.preventDefault();
                         e.stopPropagation();
 
-                        // Get the code file name from the parent container
-                        const codeContainer = this.closest('.code-placeholder');
-                        const codeFile = codeContainer.getAttribute('data-code-file');
+                        // Get the code file name from the button's data attribute
+                        const codeFile = this.getAttribute('data-code-file');
                         const javaCode = javaCodeSamples[codeFile] || `// ${codeFile} placeholder`;
 
                         // Copy to clipboard using modern Clipboard API
@@ -1416,6 +1503,18 @@ public class ThirdExample {
 
             // Initialize copy buttons
             setupCopyButtons();
+
+            // --- Populate Code Placeholders ---
+            function populateCodePlaceholders() {
+                Object.keys(javaCodeSamples).forEach(fileName => {
+                    const codeElement = document.getElementById(`code-${fileName}`);
+                    if (codeElement) {
+                        codeElement.textContent = javaCodeSamples[fileName];
+                    }
+                });
+            }
+
+            populateCodePlaceholders();
 
             // Initialize intro screen
             initializeIntroScreen();
