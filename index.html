@@ -165,6 +165,21 @@
             padding: 2rem;
             position: relative;
             overflow: hidden;
+            background: transparent;
+        }
+
+        /* Background blur overlay (sits above the Three.js canvas but behind slides/UI) */
+        #bg-blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* above canvas (-2) but below normal content (0) */
+            pointer-events: none;
+            backdrop-filter: blur(6px) saturate(1.15);
+            -webkit-backdrop-filter: blur(6px) saturate(1.15);
+            background: rgba(8, 10, 18, 0.10); /* subtle darken to improve contrast */
         }
 
         /* --- Animations --- */
@@ -501,13 +516,13 @@
             <div class="intro-logo"><i class="fa-solid fa-code"></i></div>
             <div class="intro-logo"><i class="fa-brands fa-java"></i></div>
         </div>
-        <p class="intro-subtitle">Presented by Roman Bernatskyi</p>
+        <p class="intro-subtitle">Presentato da Roman Bernatskyi</p>
     </div>
 
     <div id="presentation-container">
 
         <!-- SLIDE 1: Title -->
-        <section id="slide-1" class="slide bg-[url('http://googleusercontent.com/image_collection/image_retrieval/2581522223865343701')] bg-cover bg-center bg-no-repeat bg-blend-multiply bg-slate-900/90">
+        <section id="slide-1" class="slide">
             <div class="slide-content">
                 <div class="text-center space-y-6 max-w-4xl">
                     <div class="inline-block px-4 py-2 rounded-full border border-java-orange text-java-orange font-mono text-sm mb-4">CS 101: Advanced Java</div>
@@ -516,28 +531,28 @@
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-java-blue to-java-orange">Creation, Usage, & Control</span>
                     </h1>
                     <p class="text-2xl text-slate-300 font-light mt-6">
-                        Mastering Concurrency with 3 Custom Client/Server Examples
+                        Padronanza della Concorrenza con 3 Esempi Personalizzati di Client/Server
                     </p>
                     <div class="mt-12 pt-8 border-t border-slate-700">
-                        <p class="text-lg text-slate-400">Presented by Roman Bernatskyi (RelaX)</p>
+                        <p class="text-lg text-slate-400">Presentato da Roman Bernatskyi (RelaX)</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 2: What is a Thread? -->
-        <section id="slide-2" class="slide bg-slate-900">
+        <section id="slide-2" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-12 w-full max-w-5xl flex flex-col md:flex-row items-center gap-12">
                     <div class="flex-1 space-y-6">
-                        <h2 class="text-5xl font-bold text-java-orange">What is a Thread?</h2>
+                        <h2 class="text-5xl font-bold text-java-orange">Cos'è un Thread?</h2>
                         <p class="text-xl text-slate-300 leading-relaxed">
-                            A thread is the smallest unit of execution within a process. Think of it as a separate "path" of execution.
+                            Un thread è la più piccola unità di esecuzione all'interno di un processo. Pensa a esso come un "percorso" di esecuzione separato.
                         </p>
                         <div class="bg-slate-800/50 p-6 rounded-xl border-l-4 border-java-blue">
                             <p class="text-lg text-white">
                                 <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i>
-                                While a <strong>Process</strong> is a full program (like opening Word), a <strong>Thread</strong> is a specific task happening inside it (like typing while the spell-checker runs).
+                                Mentre un <strong>Process</strong> è un programma completo (come aprire Word), un <strong>Thread</strong> è un'attività specifica che accade al suo interno (come digitare mentre il controllo ortografico funziona).
                             </p>
                         </div>
                     </div>
@@ -549,30 +564,30 @@
         </section>
 
         <!-- SLIDE 3: Why Do We Use Threads? -->
-        <section id="slide-3" class="slide bg-slate-800">
+        <section id="slide-3" class="slide">
             <div class="slide-content">
                 <div class="w-full max-w-6xl">
-                    <h2 class="text-5xl font-bold mb-12 text-center">Why Do We Use Threads?</h2>
+                    <h2 class="text-5xl font-bold mb-12 text-center">Perché Usiamo i Thread?</h2>
                     <div class="grid grid-cols-2 gap-8">
                         <div class="glass-card p-8 hover:bg-slate-700 transition">
                             <i class="fa-solid fa-bolt text-4xl text-java-orange mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-2">Parallel Tasks</h3>
-                            <p class="text-slate-400">Execute multiple operations simultaneously, utilizing modern multi-core CPUs efficiently.</p>
+                            <h3 class="text-2xl font-bold mb-2">Attività Parallele</h3>
+                            <p class="text-slate-400">Eseguire più operazioni simultaneamente, utilizzando efficientemente i moderni CPU multi-core.</p>
                         </div>
                         <div class="glass-card p-8 hover:bg-slate-700 transition">
                             <i class="fa-solid fa-network-wired text-4xl text-java-blue mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-2">Client Handling</h3>
-                            <p class="text-slate-400">Servers need to handle hundreds of users at once. One thread per client ensures no one waits in line.</p>
+                            <h3 class="text-2xl font-bold mb-2">Gestione dei Client</h3>
+                            <p class="text-slate-400">I server devono gestire centinaia di utenti contemporaneamente. Un thread per cliente garantisce che nessuno aspetti in coda.</p>
                         </div>
                         <div class="glass-card p-8 hover:bg-slate-700 transition">
                             <i class="fa-solid fa-ghost text-4xl text-purple-400 mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-2">Background Work</h3>
-                            <p class="text-slate-400">Perform heavy calculations, file I/O, or database queries without freezing the main application.</p>
+                            <h3 class="text-2xl font-bold mb-2">Lavoro in Background</h3>
+                            <p class="text-slate-400">Eseguire calcoli pesanti, I/O su file o query su database senza congelare l'applicazione principale.</p>
                         </div>
                         <div class="glass-card p-8 hover:bg-slate-700 transition">
                             <i class="fa-solid fa-stopwatch text-4xl text-green-400 mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-2">Responsiveness</h3>
-                            <p class="text-slate-400">Keep the UI (User Interface) reactive even while heavy processing happens in the background.</p>
+                            <h3 class="text-2xl font-bold mb-2">Reattività</h3>
+                            <p class="text-slate-400">Mantenere l'interfaccia utente (User Interface) reattiva anche durante l'elaborazione pesante in background.</p>
                         </div>
                     </div>
                 </div>
@@ -580,33 +595,37 @@
         </section>
 
         <!-- SLIDE 4: The 3 Creation Methods -->
-        <section id="slide-4" class="slide bg-slate-900">
+        <section id="slide-4" class="slide">
             <div class="slide-content">
                 <div class="text-center w-full max-w-4xl">
-                    <h2 class="text-5xl font-bold mb-8">The 3 Thread Creation Methods in Java</h2>
-                    <p class="text-xl text-slate-400 mb-12">We will see one real example for each.</p>
+                    <h2 class="text-5xl font-bold mb-8">I 3 Metodi di Creazione dei Thread in Java</h2>
+                    <p class="text-xl text-slate-400 mb-12">Vedremo un esempio reale per ciascuno.</p>
                     
                     <div class="space-y-6">
                         <div class="flex items-center p-6 bg-slate-800 rounded-xl border border-slate-700">
                             <div class="h-12 w-12 bg-java-orange rounded-full flex items-center justify-center font-bold text-2xl mr-6">1</div>
                             <div class="text-left">
                                 <h3 class="text-2xl font-bold">Extend Thread</h3>
-                                <p class="text-slate-400">The classic, direct approach.</p>
+                                <p class="text-slate-400">L'approccio classico e diretto.</p>
                             </div>
                         </div>
                         <div class="flex items-center p-6 bg-slate-800 rounded-xl border border-slate-700">
                             <div class="h-12 w-12 bg-java-blue rounded-full flex items-center justify-center font-bold text-2xl mr-6">2</div>
                             <div class="text-left">
                                 <h3 class="text-2xl font-bold">Implement Runnable</h3>
-                                <p class="text-slate-400">The functional, flexible approach.</p>
+                                <p class="text-slate-400">L'approccio funzionale e flessibile.</p>
                             </div>
                         </div>
-                        <div class="flex items-center p-6 bg-slate-800 rounded-xl border border-slate-700">
-                            <div class="h-12 w-12 bg-purple-500 rounded-full flex items-center justify-center font-bold text-2xl mr-6">3</div>
-                            <div class="text-left">
-                                <h3 class="text-2xl font-bold">ExecutorService / Thread Pools</h3>
-                                <p class="text-slate-400">The professional, scalable approach.</p>
+                        <div class="flex items-center p-6 bg-slate-800 rounded-xl border border-slate-700 relative group">
+                            <div class="absolute top-2 right-2 bg-green-500 rounded-full w-10 h-10 flex items-center justify-center shadow-lg">
+                                <i class="fa-solid fa-star text-white text-lg"></i>
                             </div>
+                            <div class="h-12 w-12 bg-purple-500 rounded-full flex items-center justify-center font-bold text-2xl mr-6">3</div>
+                            <div class="text-left flex-1">
+                                <h3 class="text-2xl font-bold">ExecutorService / Thread Pools</h3>
+                                <p class="text-slate-400">L'approccio professionale e scalabile.</p>
+                            </div>
+                            <span class="absolute top-14 right-2 bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Advanced</span>
                         </div>
                     </div>
                 </div>
@@ -614,36 +633,36 @@
         </section>
 
         <!-- SLIDE 5: 1) Extending Thread (Concept) -->
-        <section id="slide-5" class="slide bg-slate-800">
+        <section id="slide-5" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-12 max-w-4xl w-full">
                     <div class="flex items-center mb-8">
                         <span class="text-8xl font-bold text-slate-700 mr-8">1</span>
-                        <h2 class="text-5xl font-bold text-java-orange">Extending Thread (Concept)</h2>
+                        <h2 class="text-5xl font-bold text-java-orange">Estendere Thread (Concetto)</h2>
                     </div>
                     <ul class="space-y-6 text-xl text-slate-300 ml-4 list-disc pl-6">
-                        <li><strong class="text-white">Class IS a thread:</strong> Your class inherits directly from the <code>Thread</code> class.</li>
-                        <li><strong class="text-white">Override <code>run()</code>:</strong> You must implement the <code>run()</code> method, which contains the logic that will be executed by the new thread.</li>
-                        <li><strong class="text-white">Call <code>.start()</code>:</strong> This is the key command that tells the JVM to launch a new thread and call the <code>run()</code> method asynchronously.</li>
-                        <li><strong class="text-white">Simple but not flexible:</strong> It's straightforward, but Java's single inheritance rule prevents the class from extending anything else.</li>
+                        <li><strong class="text-white">Class IS a thread:</strong> La tua classe eredita direttamente dalla classe <code>Thread</code>.</li>
+                        <li><strong class="text-white">Override <code>run()</code>:</strong> Devi implementare il metodo <code>run()</code>, che contiene la logica che verrà eseguita dal nuovo thread.</li>
+                        <li><strong class="text-white">Call <code>.start()</code>:</strong> Questo è il comando chiave che dice alla JVM di lanciare un nuovo thread e chiamare il metodo <code>run()</code> in modo asincrono.</li>
+                        <li><strong class="text-white">Simple but not flexible:</strong> È diretto, ma la regola dell'ereditarietà singola di Java impedisce alla classe di estendere qualcos'altro.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 6: Example #1: Extending Thread -->
-        <section id="slide-6" class="slide bg-[#1e1e1e]">
+        <section id="slide-6" class="slide">
             <div class="slide-content">
                 <div class="w-full max-w-6xl grid grid-cols-2 gap-8 items-center">
                     <div>
-                        <h2 class="text-4xl font-bold text-java-orange mb-6">Example #1: Extending Thread</h2>
+                        <h2 class="text-4xl font-bold text-java-orange mb-6">Esempio #1: Estendere Thread</h2>
                         <div class="space-y-4 text-slate-300">
-                            <p>This is our <strong>Client connecting simulation</strong> using this method.</p>
+                            <p>Questa è la nostra simulazione di <strong>Client che si connette</strong> utilizzando questo metodo.</p>
                             <ul class="list-disc pl-5 space-y-2">
-                                <li><strong>Each Client is a separate thread:</strong> Client objects <code>c1</code> and <code>c2</code> are independent worker threads.</li>
-                                <li><strong><code>sleep(4000)</code>:</strong> This line simulates a 4-second network delay or heavy processing.</li>
-                                <li><strong>Threads run in parallel:</strong> The two clients run concurrently; the main thread does not wait for <code>c1</code> to finish before starting <code>c2</code>.</li>
-                                <li><strong>Daemon Mention:</strong> We could use <code>setDaemon(true)</code> here, but we'll cover its implications later.</li>
+                                <li><strong>Ogni Client è un thread separato:</strong> Gli oggetti Client <code>c1</code> e <code>c2</code> sono thread worker indipendenti.</li>
+                                <li><strong><code>sleep(4000)</code>:</strong> Questa riga simula un ritardo di rete di 4 secondi o un'elaborazione pesante.</li>
+                                <li><strong>I thread vengono eseguiti in parallelo:</strong> I due client vengono eseguiti contemporaneamente; il thread principale non aspetta che <code>c1</code> finisca prima di avviare <code>c2</code>.</li>
+                                <li><strong>Menzione di Daemon:</strong> Potremmo usare <code>setDaemon(true)</code> qui, ma copriremo le sue implicazioni più tardi.</li>
                             </ul>
                         </div>
                     </div>
@@ -662,25 +681,25 @@
         </section>
 
         <!-- SLIDE 7: When to Use Extending Thread -->
-        <section id="slide-7" class="slide bg-slate-800">
+        <section id="slide-7" class="slide">
             <div class="slide-content">
                 <div class="text-center max-w-4xl">
-                    <h2 class="text-5xl font-bold mb-10">When to Extend Thread?</h2>
+                    <h2 class="text-5xl font-bold mb-10">Quando Estendere Thread?</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="glass-card p-8">
                             <i class="fa-solid fa-feather text-4xl text-green-400 mb-4"></i>
-                            <h3 class="text-xl font-bold mb-2">Simple Cases</h3>
-                            <p class="text-sm text-slate-400">Best for small, isolated projects or quick scripts where architectural constraints are minimal.</p>
+                            <h3 class="text-xl font-bold mb-2">Casi Semplici</h3>
+                            <p class="text-sm text-slate-400">Migliore per progetti piccoli e isolati o script rapidi dove i vincoli architetturali sono minimi.</p>
                         </div>
                         <div class="glass-card p-8">
                             <i class="fa-solid fa-cube text-4xl text-blue-400 mb-4"></i>
-                            <h3 class="text-xl font-bold mb-2">Thread Is the Object</h3>
-                            <p class="text-sm text-slate-400">When the concept of the object itself is inherently a thread (e.g., a simple custom scheduler). </p>
+                            <h3 class="text-xl font-bold mb-2">Il Thread È l'Oggetto</h3>
+                            <p class="text-sm text-slate-400">Quando il concetto dell'oggetto stesso è intrinsecamente un thread (ad es. un semplice scheduler personalizzato).</p>
                         </div>
                         <div class="glass-card p-8 border-red-500/30">
                             <i class="fa-solid fa-ban text-4xl text-red-400 mb-4"></i>
-                            <h3 class="text-xl font-bold mb-2">Avoid in Big Systems</h3>
-                            <p class="text-sm text-slate-400">Because it uses up your single chance at inheritance, it's not scalable for complex architectures.</p>
+                            <h3 class="text-xl font-bold mb-2">Evitare nei Grandi Sistemi</h3>
+                            <p class="text-sm text-slate-400">Perché usa la tua unica opportunità di ereditarietà, non è scalabile per architetture complesse.</p>
                         </div>
                     </div>
                 </div>
@@ -688,23 +707,23 @@
         </section>
 
         <!-- SLIDE 8: 2) Implementing Runnable (Concept) -->
-        <section id="slide-8" class="slide bg-slate-900">
+        <section id="slide-8" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-12 max-w-4xl w-full">
                     <div class="flex items-center mb-8">
                         <span class="text-8xl font-bold text-slate-700 mr-8">2</span>
-                        <h2 class="text-5xl font-bold text-java-blue">Implementing Runnable (Concept)</h2>
+                        <h2 class="text-5xl font-bold text-java-blue">Implementare Runnable (Concetto)</h2>
                     </div>
-                    <p class="text-2xl text-white mb-8 font-light">Focus on Separation of Concerns</p>
+                    <p class="text-2xl text-white mb-8 font-light">Focalizzati sulla Separazione delle Responsabilità</p>
                     <div class="grid grid-cols-2 gap-8">
                         <div class="bg-slate-800 p-6 rounded-lg border border-java-blue">
                             <h3 class="text-xl font-bold text-java-blue mb-2">Runnable Interface</h3>
-                            <p class="text-slate-300">Represents the <strong>TASK LOGIC</strong>. It defines <em>what</em> needs to be executed concurrently.</p>
+                            <p class="text-slate-300">Rappresenta la <strong>LOGICA DEL COMPITO</strong>. Definisce <em>cosa</em> deve essere eseguito contemporaneamente.</p>
                             <code class="block mt-4 bg-black p-2 rounded text-sm text-green-400">public void run() { ... }</code>
                         </div>
                         <div class="bg-slate-800 p-6 rounded-lg border border-slate-600">
                             <h3 class="text-xl font-bold text-slate-300 mb-2">Thread Class</h3>
-                            <p class="text-slate-400">Represents the <strong>EXECUTOR</strong>. It defines <em>how</em> to run the task using system resources.</p>
+                            <p class="text-slate-400">Rappresenta l'<strong>ESECUTORE</strong>. Definisce <em>come</em> eseguire il compito utilizzando le risorse di sistema.</p>
                             <code class="block mt-4 bg-black p-2 rounded text-sm text-slate-400">new Thread(runnable).start()</code>
                         </div>
                     </div>
@@ -713,18 +732,18 @@
         </section>
 
         <!-- SLIDE 9: Example #2: Implementing Runnable -->
-        <section id="slide-9" class="slide bg-[#1e1e1e]">
+        <section id="slide-9" class="slide">
              <div class="slide-content">
                 <div class="w-full max-w-6xl grid grid-cols-2 gap-8 items-center">
                     <div>
-                        <h2 class="text-4xl font-bold text-java-blue mb-6">Example #2: Implementing Runnable</h2>
+                        <h2 class="text-4xl font-bold text-java-blue mb-6">Esempio #2: Implementare Runnable</h2>
                         <div class="space-y-4 text-slate-300">
-                            <p>Here we see three clients using the same task logic.</p>
+                            <p>Qui vediamo tre client che utilizzano la stessa logica di compito.</p>
                             <ul class="list-disc pl-5 space-y-2">
-                                <li><strong>Alice & Bob:</strong> Simulate clients sending data by creating instances of a class that <code>implements Runnable</code>.</li>
-                                <li><strong>Third Client (Lambda):</strong> A client task is defined using a compact lambda expression (a functional style).</li>
-                                <li><strong>Reusable Logic:</strong> The <code>ClientTask</code> logic is cleanly separated, making it highly reusable and testable.</li>
-                                <li><strong>Thread is separate from logic:</strong> We explicitly create <code>Thread</code> objects to execute the <code>Runnable</code> tasks.</li>
+                                <li><strong>Alice & Bob:</strong> Simulano client che inviano dati creando istanze di una classe che <code>implements Runnable</code>.</li>
+                                <li><strong>Third Client (Lambda):</strong> Un'attività client è definita utilizzando un'espressione lambda compatta (uno stile funzionale).</li>
+                                <li><strong>Logica Riutilizzabile:</strong> La logica <code>ClientTask</code> è pulitamente separata, rendendola altamente riutilizzabile e testabile.</li>
+                                <li><strong>Thread separato dalla logica:</strong> Creiamo esplicitamente oggetti <code>Thread</code> per eseguire le attività <code>Runnable</code>.</li>
                             </ul>
                         </div>
                     </div>
@@ -743,68 +762,72 @@
         </section>
 
         <!-- SLIDE 10: Runnable vs Thread Table -->
-        <section id="slide-10" class="slide bg-slate-800">
+        <section id="slide-10" class="slide">
              <div class="slide-content">
                 <div class="w-full max-w-5xl">
-                    <h2 class="text-4xl font-bold text-center mb-10">Runnable vs. Extending Thread</h2>
+                    <h2 class="text-4xl font-bold text-center mb-10">Runnable vs. Estendere Thread</h2>
                     <div class="overflow-hidden rounded-xl border border-slate-600">
                         <table class="w-full text-left">
                             <thead class="bg-slate-900 text-java-orange">
                                 <tr>
-                                    <th class="p-6 text-xl">Feature</th>
+                                    <th class="p-6 text-xl">Caratteristica</th>
                                     <th class="p-6 text-xl">Implementing Runnable</th>
                                     <th class="p-6 text-xl">Extending Thread</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-700 bg-slate-800/80">
                                 <tr>
-                                    <td class="p-6 font-bold">Inheritance</td>
-                                    <td class="p-6 text-green-400">More flexible (can extend other classes)</td>
-                                    <td class="p-6 text-red-400">Locked (used up "extends")</td>
+                                    <td class="p-6 font-bold">Ereditarietà</td>
+                                    <td class="p-6 text-green-400">Più flessibile (può estendere altre classi)</td>
+                                    <td class="p-6 text-red-400">Bloccato (ha usato "extends")</td>
                                 </tr>
                                 <tr>
-                                    <td class="p-6 font-bold">Code Style</td>
-                                    <td class="p-6">Supports Lambdas & Method References</td>
-                                    <td class="p-6">Requires explicit class definition</td>
+                                    <td class="p-6 font-bold">Stile di Codice</td>
+                                    <td class="p-6">Supporta Lambdas & Method References</td>
+                                    <td class="p-6">Richiede definizione di classe esplicita</td>
                                 </tr>
                                 <tr>
                                     <td class="p-6 font-bold">Thread Pools</td>
-                                    <td class="p-6 text-green-400">Needed for ExecutorService</td>
-                                    <td class="p-6 text-red-400">Not compatible with Thread Pools</td>
+                                    <td class="p-6 text-green-400">Necessario per ExecutorService</td>
+                                    <td class="p-6 text-red-400">Non compatibile con Thread Pools</td>
                                 </tr>
                                 <tr>
-                                    <td class="p-6 font-bold">Preferred?</td>
-                                    <td class="p-6 text-java-blue font-semibold">Yes (More flexible, scalable)</td>
-                                    <td class="p-6 text-red-400">No (Only for simple cases)</td>
+                                    <td class="p-6 font-bold">Preferito?</td>
+                                    <td class="p-6 text-java-blue font-semibold">Sì (Più flessibile, scalabile)</td>
+                                    <td class="p-6 text-red-400">No (Solo per casi semplici)</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="mt-6 text-center text-xl font-bold text-java-blue">
-                        <i class="fa-solid fa-thumbs-up mr-2"></i> Verdict: Prefer Runnable!
+                        <i class="fa-solid fa-thumbs-up mr-2"></i> Verdetto: Preferisci Runnable!
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 11: 3) ExecutorService (Concept) -->
-        <section id="slide-11" class="slide bg-slate-900">
+        <section id="slide-11" class="slide">
             <div class="slide-content">
-                <div class="glass-card p-8 md:p-12 max-w-5xl w-full">
+                <div class="glass-card p-8 md:p-12 max-w-5xl w-full relative">
+                    <div class="absolute top-4 left-4 bg-green-500 rounded-full w-12 h-12 flex items-center justify-center shadow-lg z-10 group hover:">
+                        <i class="fa-solid fa-star text-white text-xl"></i>
+                    </div>
+                    <div class="absolute top-16 left-4 bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-semibold opacity-0 hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Advanced</div>
                     <div class="flex flex-col md:flex-row items-center md:items-start mb-8 gap-4">
                         <span class="text-6xl md:text-8xl font-bold text-slate-700">3</span>
-                        <h2 class="text-4xl md:text-5xl font-bold text-purple-400">ExecutorService (Concept)</h2>
+                        <h2 class="text-4xl md:text-5xl font-bold text-purple-400">ExecutorService (Concetto)</h2>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div class="space-y-6">
                             <p class="text-lg md:text-xl text-slate-300 font-bold">
-                                The modern solution for managing concurrency using Thread Pools.
+                                La soluzione moderna per gestire la concorrenza utilizzando Thread Pools.
                             </p>
                             <ul class="list-disc pl-5 space-y-2 text-slate-400 text-sm md:text-base">
-                                <li><strong>Thread Pools:</strong> It manages a set number of worker threads, avoiding the overhead of creating new ones constantly.</li>
-                                <li><strong>Avoid Manual Creation:</strong> You submit the task; the ExecutorService handles the thread mechanics.</li>
-                                <li><strong>Ideal for Servers:</strong> Essential for handling concurrent requests efficiently and preventing system resource exhaustion.</li>
-                                <li><strong>Automatic Scheduling:</strong> Tasks are queued and automatically scheduled when a thread becomes available.</li>
+                                <li><strong>Thread Pools:</strong> Gestisce un numero fisso di thread worker, evitando il sovraccarico di crearne di nuovi costantemente.</li>
+                                <li><strong>Evita la Creazione Manuale:</strong> Invii il compito; l'ExecutorService gestisce la meccanica del thread.</li>
+                                <li><strong>Ideale per Server:</strong> Essenziale per gestire le richieste simultanee in modo efficiente e prevenire l'esaurimento delle risorse di sistema.</li>
+                                <li><strong>Pianificazione Automatica:</strong> I compiti vengono messi in coda e pianificati automaticamente quando un thread diventa disponibile.</li>
                             </ul>
                         </div>
                         <div class="flex justify-center items-center">
@@ -816,18 +839,22 @@
         </section>
 
         <!-- SLIDE 12: Example #3: ExecutorService / Thread Pool -->
-        <section id="slide-12" class="slide bg-[#1e1e1e]">
+        <section id="slide-12" class="slide">
              <div class="slide-content">
-                <div class="w-full max-w-6xl grid grid-cols-2 gap-8 items-center">
+                <div class="w-full max-w-6xl grid grid-cols-2 gap-8 items-center relative group">
+                    <div class="absolute top-2 left-2 bg-green-500 rounded-full w-12 h-12 flex items-center justify-center shadow-lg z-10">
+                        <i class="fa-solid fa-star text-white text-xl"></i>
+                    </div>
+                    <div class="absolute top-14 left-2 bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Advanced</div>
                     <div>
-                        <h2 class="text-4xl font-bold text-purple-400 mb-6">Example #3: ExecutorService</h2>
+                        <h2 class="text-4xl font-bold text-purple-400 mb-6">Esempio #3: ExecutorService</h2>
                         <div class="space-y-4 text-slate-300">
-                            <p>This perfectly simulates many clients connecting to a server.</p>
+                            <p>Questo simula perfettamente molti client che si connettono a un server.</p>
                             <ul class="list-disc pl-5 space-y-2">
-                                <li><strong>Detect CPU Cores:</strong> We get the number of available processors to create an optimally sized pool.</li>
-                                <li><strong>Create Fixed Pool:</strong> <code>Executors.newFixedThreadPool()</code> creates a pool with a set number of worker threads.</li>
-                                <li><strong>Submit Client Tasks:</strong> We use <code>executor.submit(runnableTask)</code> to give the tasks to the pool.</li>
-                                <li><strong>Efficient Handling:</strong> The pool processes them efficiently, reusing the worker threads.</li>
+                                <li><strong>Rileva Core CPU:</strong> Otteniamo il numero di processori disponibili per creare un pool di dimensioni ottimali.</li>
+                                <li><strong>Crea Pool Fisso:</strong> <code>Executors.newFixedThreadPool()</code> crea un pool con un numero fisso di thread worker.</li>
+                                <li><strong>Invia Compiti Client:</strong> Utilizziamo <code>executor.submit(runnableTask)</code> per dare i compiti al pool.</li>
+                                <li><strong>Gestione Efficiente:</strong> Il pool li elabora in modo efficiente, riutilizzando i thread worker.</li>
                             </ul>
                         </div>
                     </div>
@@ -846,30 +873,34 @@
         </section>
 
         <!-- SLIDE 13: ExecutorService Advantages -->
-        <section id="slide-13" class="slide bg-slate-800">
+        <section id="slide-13" class="slide">
             <div class="slide-content">
-                <div class="w-full max-w-4xl">
-                    <h2 class="text-5xl font-bold mb-10 text-center text-purple-400">ExecutorService Advantages</h2>
+                <div class="w-full max-w-4xl relative group">
+                    <div class="absolute top-0 left-0 bg-green-500 rounded-full w-12 h-12 flex items-center justify-center shadow-lg z-10">
+                        <i class="fa-solid fa-star text-white text-xl"></i>
+                    </div>
+                    <div class="absolute top-12 left-0 bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Advanced</div>
+                    <h2 class="text-5xl font-bold mb-10 text-center text-purple-400">Vantaggi di ExecutorService</h2>
                     <div class="grid grid-cols-2 gap-6">
                         <div class="glass-card p-6 bg-slate-700/50">
                             <i class="fa-solid fa-gauge-high text-3xl text-green-400 mb-3"></i>
-                            <h3 class="text-xl font-bold">Speed</h3>
-                            <p class="text-slate-400">Reusing threads is much faster than creating and destroying a new thread for every single task.</p>
+                            <h3 class="text-xl font-bold">Velocità</h3>
+                            <p class="text-slate-400">Riutilizzare i thread è molto più veloce che creare e distruggere un nuovo thread per ogni singolo compito.</p>
                         </div>
                          <div class="glass-card p-6 bg-slate-700/50">
                             <i class="fa-solid fa-recycle text-3xl text-blue-400 mb-3"></i>
-                            <h3 class="text-xl font-bold">Reusability</h3>
-                            <p class="text-slate-400">The underlying worker threads are recycled, reducing resource consumption and improving throughput.</p>
+                            <h3 class="text-xl font-bold">Riutilizzabilità</h3>
+                            <p class="text-slate-400">I thread worker sottostanti vengono riciclati, riducendo il consumo di risorse e migliorando il throughput.</p>
                         </div>
                         <div class="glass-card p-6 bg-slate-700/50">
                             <i class="fa-solid fa-arrows-up-down text-3xl text-java-orange mb-3"></i>
-                            <h3 class="text-xl font-bold">Scalability</h3>
-                            <p class="text-slate-400">Limits resource usage and ensures the application doesn't overload the server with too many concurrent threads.</p>
+                            <h3 class="text-xl font-bold">Scalabilità</h3>
+                            <p class="text-slate-400">Limita l'utilizzo delle risorse e garantisce che l'applicazione non sovraccarichi il server con troppi thread concorrenti.</p>
                         </div>
                         <div class="glass-card p-6 bg-slate-700/50">
                             <i class="fa-solid fa-broom text-3xl text-pink-400 mb-3"></i>
-                            <h3 class="text-xl font-bold">Cleaner Code</h3>
-                            <p class="text-slate-400">Abstracts away the manual thread management, leading to simpler, more readable concurrency code.</p>
+                            <h3 class="text-xl font-bold">Codice Più Pulito</h3>
+                            <p class="text-slate-400">Astrae la gestione manuale dei thread, portando a codice di concorrenza più semplice e leggibile.</p>
                         </div>
                     </div>
                 </div>
@@ -877,33 +908,33 @@
         </section>
 
         <!-- SLIDE 14: Thread Lifecycle -->
-        <section id="slide-14" class="slide bg-slate-900">
+        <section id="slide-14" class="slide">
             <div class="slide-content">
                 <div class="w-full max-w-6xl px-4">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6 md:mb-8 text-java-blue text-center">The Java Thread Lifecycle</h2>
-                    <p class="text-lg md:text-xl text-slate-400 mb-6 text-center">A thread moves through several defined states from creation until death.</p>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 md:mb-8 text-java-blue text-center">Il Ciclo di Vita dei Thread Java</h2>
+                    <p class="text-lg md:text-xl text-slate-400 mb-6 text-center">Un thread passa attraverso diversi stati definiti dalla creazione fino alla morte.</p>
                     
                     <div class="flex flex-col lg:flex-row justify-center gap-6 items-start lg:items-center">
                         <div class="flex-1 space-y-3 md:space-y-4 w-full">
                             <div class="p-3 md:p-4 bg-slate-800 rounded-lg">
                                 <h3 class="text-xl md:text-2xl font-bold text-java-orange">NEW</h3>
-                                <p class="text-sm md:text-base text-slate-300">Thread object has been created but not yet started (<code>new Thread()</code>).</p>
+                                <p class="text-sm md:text-base text-slate-300">L'oggetto Thread è stato creato ma non ancora avviato (<code>new Thread()</code>).</p>
                             </div>
                             <div class="p-3 md:p-4 bg-slate-800 rounded-lg">
                                 <h3 class="text-xl md:text-2xl font-bold text-java-orange">RUNNABLE</h3>
-                                <p class="text-sm md:text-base text-slate-300">Thread is ready to run and waiting for the OS scheduler (after <code>.start()</code>).</p>
+                                <p class="text-sm md:text-base text-slate-300">Il thread è pronto per eseguire e in attesa dello scheduler del sistema operativo (dopo <code>.start()</code>).</p>
                             </div>
                             <div class="p-3 md:p-4 bg-slate-800 rounded-lg">
                                 <h3 class="text-xl md:text-2xl font-bold text-java-orange">RUNNING</h3>
-                                <p class="text-sm md:text-base text-slate-300">The thread is actively executing its <code>run()</code> method on the CPU.</p>
+                                <p class="text-sm md:text-base text-slate-300">Il thread sta attivamente eseguendo il suo metodo <code>run()</code> sulla CPU.</p>
                             </div>
                              <div class="p-3 md:p-4 bg-slate-800 rounded-lg">
                                 <h3 class="text-xl md:text-2xl font-bold text-java-orange">BLOCKED/WAITING</h3>
-                                <p class="text-sm md:text-base text-slate-300">Thread is temporarily paused (e.g., waiting for a lock, <code>.sleep()</code>, or <code>.join()</code>).</p>
+                                <p class="text-sm md:text-base text-slate-300">Il thread è temporaneamente in pausa (ad es. in attesa di un lock, <code>.sleep()</code>, o <code>.join()</code>).</p>
                             </div>
                             <div class="p-3 md:p-4 bg-slate-800 rounded-lg">
                                 <h3 class="text-xl md:text-2xl font-bold text-java-orange">TERMINATED</h3>
-                                <p class="text-sm md:text-base text-slate-300">The thread has finished execution (<code>run()</code> method completed or an exception occurred).</p>
+                                <p class="text-sm md:text-base text-slate-300">Il thread ha finito l'esecuzione (il metodo <code>run()</code> è completato o si è verificata un'eccezione).</p>
                             </div>
                         </div>
                         <div class="flex-1 flex justify-center items-center w-full">
@@ -911,17 +942,17 @@
                         </div>
                     </div>
 
-                    <p class="text-base md:text-lg text-slate-500 mt-6 text-center">The methods we cover next are what control these transitions.</p>
+                    <p class="text-base md:text-lg text-slate-500 mt-6 text-center">I metodi che copriremo in seguito sono quelli che controllano queste transizioni.</p>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 15: Essential Thread Control Methods (Overview) -->
-        <section id="slide-15" class="slide bg-slate-800">
+        <section id="slide-15" class="slide">
             <div class="slide-content">
                 <div class="w-full max-w-4xl">
-                    <h2 class="text-5xl font-bold mb-10 text-center text-java-orange">Essential Thread Control Methods</h2>
-                    <p class="text-xl text-slate-300 mb-8 text-center">These methods allow you to manage a thread's state, priority, and interactions.</p>
+                    <h2 class="text-5xl font-bold mb-10 text-center text-java-orange">Metodi Essenziali di Controllo dei Thread</h2>
+                    <p class="text-xl text-slate-300 mb-8 text-center">Questi metodi ti consentono di gestire lo stato, la priorità e le interazioni di un thread.</p>
                     
                     <div class="grid grid-cols-3 gap-4">
                         <div class="method-box green-400 text-center p-4 bg-slate-900 rounded-lg font-mono text-xl text-green-400 cursor-pointer" data-slide="16">.start()</div>
@@ -934,31 +965,31 @@
                         <div class="method-box slate-500 text-center p-4 bg-slate-900 rounded-lg font-mono text-xl text-slate-500 cursor-pointer" data-slide="20">.stop() (Deprecated)</div>
                     </div>
 
-                    <p class="text-2xl font-bold text-center mt-12 text-white">Now let's see each one quickly.</p>
+                    <p class="text-2xl font-bold text-center mt-12 text-white">Ora vediamo ciascuno rapidamente.</p>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 16: .isAlive() -->
-        <section id="slide-16" class="slide bg-slate-900">
+        <section id="slide-16" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-10 w-full max-w-5xl">
                     <h2 class="text-5xl font-bold mb-6 text-java-orange"><code>.isAlive()</code></h2>
                     <div class="space-y-6">
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">What it does:</h3>
-                            <p class="text-slate-300">Checks if the thread has been started and has not yet died. It returns <code>true</code> if the thread is in the Runnable or Blocked/Waiting state.</p>
+                            <h3 class="text-xl font-bold mb-2">Cosa fa:</h3>
+                            <p class="text-slate-300">Controlla se il thread è stato avviato e non è ancora morto. Restituisce <code>true</code> se il thread è nello stato Runnable o Blocked/Waiting.</p>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">Example:</h3>
-                            <pre class="font-mono text-sm bg-code-bg p-3 rounded text-green-400">Thread t = new Thread(() -> { /* Task logic here */ });
+                            <h3 class="text-xl font-bold mb-2">Esempio:</h3>
+                            <pre class="font-mono text-sm bg-code-bg p-3 rounded text-green-400">Thread t = new Thread(() -> { /* Logica del compito qui */ });
 t.start();
-System.out.println(t.isAlive()); // true (usually)
+System.out.println(t.isAlive()); // true (solitamente)
 </pre>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">Use Case:</h3>
-                            <p class="text-slate-300">Checking when a background process (like a file download or heavy calculation) is still actively running.</p>
+                            <h3 class="text-xl font-bold mb-2">Caso d'Uso:</h3>
+                            <p class="text-slate-300">Controllare quando un processo in background (come un download di file o un calcolo pesante) è ancora attivamente in esecuzione.</p>
                         </div>
                     </div>
                 </div>
@@ -966,25 +997,25 @@ System.out.println(t.isAlive()); // true (usually)
         </section>
 
         <!-- SLIDE 17: .join() -->
-        <section id="slide-17" class="slide bg-slate-800">
+        <section id="slide-17" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-10 w-full max-w-5xl">
                     <h2 class="text-5xl font-bold mb-6 text-java-blue"><code>.join()</code></h2>
                     <div class="space-y-6">
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">What it does:</h3>
-                            <p class="text-slate-300">Causes the current thread (e.g., the <code>main</code> thread) to wait until the thread it is called on (e.g., <code>t1</code>) finishes execution.</p>
+                            <h3 class="text-xl font-bold mb-2">Cosa fa:</h3>
+                            <p class="text-slate-300">Causa che il thread attuale (ad es. il thread <code>main</code>) aspetti fino a quando il thread su cui viene chiamato (ad es. <code>t1</code>) termina l'esecuzione.</p>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">Mini-Example:</h3>
+                            <h3 class="text-xl font-bold mb-2">Mini-Esempio:</h3>
                             <pre class="font-mono text-sm bg-code-bg p-3 rounded text-green-400">t1.start();
-t1.join(); // &lt;-- Main thread waits here
-System.out.println("t1 completed"); // Only prints after t1 is done
+t1.join(); // &lt;-- Il thread main aspetta qui
+System.out.println("t1 completato"); // Stampa solo dopo che t1 è terminato
 </pre>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">Use Case:</h3>
-                            <p class="text-slate-300">Ensuring that a critical preprocessing step, like initializing a resource or waiting for a client to finish sending its setup data, completes before the program proceeds.</p>
+                            <h3 class="text-xl font-bold mb-2">Caso d'Uso:</h3>
+                            <p class="text-slate-300">Assicurare che un passo di pre-elaborazione critico, come inizializzare una risorsa o aspettare che un client finisca di inviare i dati di configurazione, sia completato prima che il programma proceda.</p>
                         </div>
                     </div>
                 </div>
@@ -992,22 +1023,22 @@ System.out.println("t1 completed"); // Only prints after t1 is done
         </section>
 
         <!-- SLIDE 18: .interrupt() -->
-        <section id="slide-18" class="slide bg-slate-900">
+        <section id="slide-18" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-10 w-full max-w-5xl">
                     <h2 class="text-5xl font-bold mb-6 text-red-400"><code>.interrupt()</code></h2>
                     <div class="space-y-6">
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">What it does:</h3>
-                            <p class="text-slate-300">Sets the thread's interrupt status flag to <code>true</code>. It's a <strong>polite request</strong> to the thread to stop what it's doing.</p>
+                            <h3 class="text-xl font-bold mb-2">Cosa fa:</h3>
+                            <p class="text-slate-300">Imposta il flag di stato di interrupt del thread su <code>true</code>. È una <strong>richiesta educata</strong> al thread di smettere di fare quello che sta facendo.</p>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg border-l-4 border-red-500">
-                            <h3 class="text-xl font-bold mb-2 text-red-300">Important:</h3>
-                            <p class="text-slate-300">It does **NOT** force the thread to stop. The thread must check the flag (<code>Thread.interrupted()</code>) or catch an <code>InterruptedException</code> (if sleeping/waiting) to terminate gracefully.</p>
+                            <h3 class="text-xl font-bold mb-2 text-red-300">Importante:</h3>
+                            <p class="text-slate-300">NON forza il thread a fermarsi. Il thread deve controllare il flag (<code>Thread.interrupted()</code>) o catturare un'<code>InterruptedException</code> (se in sleep/wait) per terminare delicatamente.</p>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">Use Case:</h3>
-                            <p class="text-slate-300">Cancelling long-running loops or calculations, or safely stopping a thread stuck in a <code>sleep()</code> or <code>wait()</code> state.</p>
+                            <h3 class="text-xl font-bold mb-2">Caso d'Uso:</h3>
+                            <p class="text-slate-300">Annullare loop o calcoli lunga esecuzione, o fermare in sicurezza un thread bloccato in uno stato <code>sleep()</code> o <code>wait()</code>.</p>
                         </div>
                     </div>
                 </div>
@@ -1015,25 +1046,25 @@ System.out.println("t1 completed"); // Only prints after t1 is done
         </section>
 
         <!-- SLIDE 19: .setDaemon(true) -->
-        <section id="slide-19" class="slide bg-slate-800">
+        <section id="slide-19" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-10 w-full max-w-5xl">
                     <h2 class="text-5xl font-bold mb-6 text-purple-400"><code>.setDaemon(true)</code></h2>
                     <div class="space-y-6">
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">What it does:</h3>
-                            <p class="text-slate-300">Turns a thread into a <strong>background thread</strong> (or Daemon thread). The JVM won't wait for these threads to finish.</p>
+                            <h3 class="text-xl font-bold mb-2">Cosa fa:</h3>
+                            <p class="text-slate-300">Trasforma un thread in un <strong>thread background</strong> (o thread Daemon). La JVM non aspetterà che questi thread finiscano.</p>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">The Rule:</h3>
-                            <p class="text-slate-300 font-bold">The entire Java application terminates when all **non-daemon** (user) threads have finished execution.</p>
+                            <h3 class="text-xl font-bold mb-2">La Regola:</h3>
+                            <p class="text-slate-300 font-bold">L'intera applicazione Java termina quando tutti i thread **non-daemon** (utente) hanno finito l'esecuzione.</p>
                         </div>
                         <div class="bg-slate-700/50 p-4 rounded-lg">
-                            <h3 class="text-xl font-bold mb-2">Use Case:</h3>
-                            <p class="text-slate-300">Ideal for non-critical, continuous background tasks like logging, garbage collection, or heartbeat monitoring.</p>
+                            <h3 class="text-xl font-bold mb-2">Caso d'Uso:</h3>
+                            <p class="text-slate-300">Ideale per compiti background non critici e continui come logging, raccolta di spazzatura (garbage collection) o monitoraggio del battito cardiaco.</p>
                         </div>
                          <p class="text-lg text-yellow-400 font-semibold pt-4">
-                            Tie-in to Example 1: In <code>FirstExample</code>, setting <code>c2.setDaemon(true)</code> would make <code>c2</code> stop instantly when the <code>main</code> thread finishes.
+                            Collegamento all'Esempio 1: In <code>FirstExample</code>, impostare <code>c2.setDaemon(true)</code> farebbe arrestare <code>c2</code> istantaneamente quando il thread <code>main</code> finisce.
                         </p>
                     </div>
                 </div>
@@ -1041,28 +1072,28 @@ System.out.println("t1 completed"); // Only prints after t1 is done
         </section>
 
         <!-- SLIDE 20: .stop() (Deprecated) -->
-        <section id="slide-20" class="slide bg-slate-900">
+        <section id="slide-20" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-10 w-full max-w-5xl text-center border-4 border-red-600 bg-red-900/20">
                     <i class="fa-solid fa-skull-crossbones text-7xl text-red-500 mb-6"></i>
-                    <h2 class="text-5xl font-extrabold mb-6 text-red-500"><code>.stop()</code> (Deprecated)</h2>
+                    <h2 class="text-5xl font-extrabold mb-6 text-red-500"><code>.stop()</code> (Deprecato)</h2>
                     <div class="space-y-4 text-xl">
-                        <h3 class="text-2xl font-bold text-red-400">Why You Must NOT Use It:</h3>
+                        <h3 class="text-2xl font-bold text-red-400">Perché NON Devi Usarlo:</h3>
                         <ul class="list-none space-y-2 text-slate-300">
-                            <li><strong class="text-red-300">Kills Threads Instantly:</strong> It forces the thread to stop without giving it a chance to clean up.</li>
-                            <li><strong class="text-red-300">Data Corruption:</strong> Leaves any shared resources (like database connections or object locks) in an unpredictable and corrupted state.</li>
-                            <li><strong class="text-red-300">Unsafe:</strong> Leads to application instability and difficult-to-debug errors.</li>
+                            <li><strong class="text-red-300">Uccide i Thread Istantaneamente:</strong> Forza il thread a fermarsi senza dargli la possibilità di ripulire.</li>
+                            <li><strong class="text-red-300">Corruzione dei Dati:</strong> Lascia qualsiasi risorsa condivisa (come connessioni al database o lock di oggetti) in uno stato impredibile e corrotto.</li>
+                            <li><strong class="text-red-300">Non Sicuro:</strong> Porta a instabilità dell'applicazione e errori difficili da debug.</li>
                         </ul>
                     </div>
                     <p class="text-xl font-mono mt-8 text-slate-500">
-                        Mentioned only because it exists — <strong class="text-red-400">no one uses it</strong> in modern, safe Java code.
+                        Menzionato solo perché esiste — <strong class="text-red-400">nessuno lo usa</strong> nel codice Java moderno e sicuro.
                     </p>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 21: Summary of Thread Controls -->
-        <section id="slide-21" class="slide bg-slate-800">
+        <section id="slide-21" class="slide">
              <div class="slide-content">
                 <div class="w-full max-w-5xl">
                     <h2 class="text-4xl font-bold text-center mb-10 text-java-orange">Summary of Thread Controls</h2>
@@ -1070,36 +1101,36 @@ System.out.println("t1 completed"); // Only prints after t1 is done
                         <table class="w-full text-left control-table">
                             <thead>
                                 <tr>
-                                    <th class="text-xl">Method</th>
-                                    <th class="text-xl">What it Does</th>
-                                    <th class="text-xl">Safety/Use</th>
+                                    <th class="text-xl">Metodo</th>
+                                    <th class="text-xl">Cosa fa</th>
+                                    <th class="text-xl">Sicurezza/Uso</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-700 bg-slate-900/50">
                                 <tr>
                                     <td class="font-mono text-java-orange"><code>.isAlive()</code></td>
-                                    <td>Checks if thread is currently running or runnable.</td>
-                                    <td class="text-green-400">Safe</td>
+                                    <td>Controlla se il thread è attualmente in esecuzione o runnable.</td>
+                                    <td class="text-green-400">Sicuro</td>
                                 </tr>
                                 <tr>
                                     <td class="font-mono text-java-blue"><code>.join()</code></td>
-                                    <td>Makes the calling thread wait until this thread finishes.</td>
-                                    <td class="text-green-400">Safe</td>
+                                    <td>Fa aspettare il thread chiamante fino a quando questo thread finisce.</td>
+                                    <td class="text-green-400">Sicuro</td>
                                 </tr>
                                 <tr>
                                     <td class="font-mono text-red-400"><code>.interrupt()</code></td>
-                                    <td>Asks the thread politely to stop (sets a flag).</td>
-                                    <td class="text-yellow-400">Needs thread cooperation</td>
+                                    <td>Chiede educatamente al thread di fermarsi (imposta un flag).</td>
+                                    <td class="text-yellow-400">Necessita cooperazione del thread</td>
                                 </tr>
                                 <tr>
                                     <td class="font-mono text-purple-400"><code>.setDaemon()</code></td>
-                                    <td>Turns thread into a background cleanup service.</td>
-                                    <td class="text-green-400">Safe</td>
+                                    <td>Trasforma il thread in un servizio di pulizia in background.</td>
+                                    <td class="text-green-400">Sicuro</td>
                                 </tr>
                                 <tr>
                                     <td class="font-mono text-slate-500"><code>.stop()</code></td>
-                                    <td>Kills the thread instantly.</td>
-                                    <td class="text-red-500">❌ Dead, Never Use</td>
+                                    <td>Uccide il thread istantaneamente.</td>
+                                    <td class="text-red-500">❌ Morto, Non Usare Mai</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1109,49 +1140,49 @@ System.out.println("t1 completed"); // Only prints after t1 is done
         </section>
 
         <!-- SLIDE 22: Bringing It All Together -->
-        <section id="slide-22" class="slide bg-slate-900">
+        <section id="slide-22" class="slide">
              <div class="slide-content">
                 <div class="w-full max-w-5xl">
-                    <h2 class="text-4xl font-bold text-center mb-10 text-java-blue">Bringing It All Together: Recap</h2>
+                    <h2 class="text-4xl font-bold text-center mb-10 text-java-blue">Mettendo Tutto Insieme: Riepilogo</h2>
                     <div class="overflow-hidden rounded-xl border border-slate-600">
                         <table class="w-full text-left">
                             <thead class="bg-slate-800 text-java-orange">
                                 <tr>
-                                    <th class="p-4 text-xl">Concept</th>
-                                    <th class="p-4 text-xl">Example Used</th>
-                                    <th class="p-4 text-xl">Purpose</th>
+                                    <th class="p-4 text-xl">Concetto</th>
+                                    <th class="p-4 text-xl">Esempio Usato</th>
+                                    <th class="p-4 text-xl">Scopo</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-700 bg-slate-800/80">
                                 <tr>
                                     <td class="p-4 font-bold">Extending Thread</td>
                                     <td class="p-4 font-mono text-yellow-400">FirstExample</td>
-                                    <td class="p-4">Simple, direct client definition.</td>
+                                    <td class="p-4">Definizione client semplice e diretta.</td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-bold">Implementing Runnable</td>
                                     <td class="p-4 font-mono text-yellow-400">SecondExample</td>
-                                    <td class="p-4">Separation of task logic and thread execution.</td>
+                                    <td class="p-4">Separazione della logica di compito e esecuzione del thread.</td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-bold">ExecutorService</td>
                                     <td class="p-4 font-mono text-yellow-400">ThirdExample</td>
-                                    <td class="p-4">Efficient, scalable handling of many clients (server-side).</td>
+                                    <td class="p-4">Gestione efficiente e scalabile di molti client (lato server).</td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-bold"><code>sleep()</code></td>
                                     <td class="p-4 font-mono text-yellow-400">FirstExample</td>
-                                    <td class="p-4">Simulation of network delay/waiting.</td>
+                                    <td class="p-4">Simulazione di ritardo di rete/attesa.</td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-bold">Lambdas</td>
                                     <td class="p-4 font-mono text-yellow-400">Second & Third</td>
-                                    <td class="p-4">Compact definition of tasks (Runnable).</td>
+                                    <td class="p-4">Definizione compatta di compiti (Runnable).</td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-bold">Daemon Thread</td>
-                                    <td class="p-4 font-mono text-yellow-400">FirstExample (optional)</td>
-                                    <td class="p-4">Ensure background work stops with the main application.</td>
+                                    <td class="p-4 font-mono text-yellow-400">FirstExample (opzionale)</td>
+                                    <td class="p-4">Assicurati che il lavoro di background si fermi con l'applicazione principale.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1161,18 +1192,18 @@ System.out.println("t1 completed"); // Only prints after t1 is done
         </section>
 
         <!-- SLIDE 23: Real-World Message -->
-        <section id="slide-23" class="slide bg-slate-800">
+        <section id="slide-23" class="slide">
             <div class="slide-content">
                 <div class="glass-card p-12 max-w-4xl w-full text-center">
                     <i class="fa-solid fa-rocket text-6xl text-green-400 mb-6"></i>
-                    <h2 class="text-5xl font-extrabold mb-6 text-java-orange">The Real-World Message</h2>
+                    <h2 class="text-5xl font-extrabold mb-6 text-java-orange">Il Messaggio del Mondo Reale</h2>
                     <p class="text-2xl text-slate-200 leading-relaxed">
-                        In almost all modern, high-performance Java applications (especially servers), the preferred pattern is:
+                        In quasi tutte le moderne applicazioni Java ad alte prestazioni (soprattutto server), il pattern preferito è:
                     </p>
                     <div class="mt-8 p-6 bg-slate-900 rounded-xl shadow-lg border-l-4 border-java-blue">
                         <span class="text-3xl font-mono text-white">Runnable + ExecutorService</span>
                         <p class="text-slate-400 mt-2 text-lg">
-                            (This, combined with newer concepts like Java's Virtual Threads, defines how scalable concurrency is built.)
+                            (Questo, combinato con concetti più nuovi come i Virtual Threads di Java, definisce come costruire la concorrenza scalabile.)
                         </p>
                     </div>
                 </div>
@@ -1180,18 +1211,18 @@ System.out.println("t1 completed"); // Only prints after t1 is done
         </section>
 
         <!-- SLIDE 24: Questions -->
-        <section id="slide-24" class="slide bg-[url('http://googleusercontent.com/image_collection/image_retrieval/2581522223865343701')] bg-cover bg-center bg-no-repeat bg-blend-multiply bg-slate-900/90">
+        <section id="slide-24" class="slide">
             <div class="slide-content">
                 <div class="text-center space-y-6 max-w-4xl p-10 glass-card">
                     <h1 class="text-7xl font-extrabold tracking-tight text-java-orange">
                         Q & A
                     </h1>
                     <p class="text-2xl text-slate-300 font-light mt-6">
-                        Thank you for your attention.<br>
-                        We have 3–5 minutes remaining for questions!
+                        Grazie per la vostra attenzione.<br>
+                        Abbiamo 3-5 minuti rimasti per domande!
                     </p>
                     <div class="mt-12 pt-8 border-t border-slate-700">
-                        <p class="text-lg text-slate-400">Feel free to ask about the examples, methods, or lifecycle.</p>
+                        <p class="text-lg text-slate-400">Sentitevi liberi di fare domande sui diagrammi, metodi o il ciclo di vita.</p>
                     </div>
                 </div>
             </div>
@@ -1531,7 +1562,208 @@ public class ThirdExample {
             }
 
             setupMethodBoxNavigation();
+
+            // --- 3D NEON BACKGROUND WITH THREE.JS ---
+            let threeJsScene = null;
+            // Start with a flat CSS background by default (Three.js disabled)
+            let threeJsEnabled = false;
+
+            function initThreeJsBackground() {
+                if (threeJsScene) return; // Already initialized
+
+                // Create canvas and scene
+                const canvas = document.createElement('canvas');
+                canvas.id = 'three-js-bg';
+                // Put canvas behind everything (use -2) so the overlay can sit between canvas and slides
+                canvas.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; display: block; pointer-events: none;';
+                document.body.insertBefore(canvas, document.body.firstChild);
+
+                // Create a blur/dim overlay that sits above the canvas but below page content
+                const overlay = document.createElement('div');
+                overlay.id = 'bg-blur-overlay';
+                // Inline style as a fallback if CSS doesn't apply yet
+                overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; backdrop-filter: blur(6px) saturate(1.15); -webkit-backdrop-filter: blur(6px) saturate(1.15); background: rgba(8,10,18,0.10);';
+                // Insert overlay directly after canvas
+                canvas.parentNode.insertBefore(overlay, canvas.nextSibling);
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setClearColor(0x0a0e27, 0); // Deep space blue
+                camera.position.z = 15;
+
+                // Store scene data
+                threeJsScene = { scene, camera, renderer, objects: [], particles: [], overlay };
+
+                // Create particles for more neon effect
+                const particleGeometry = new THREE.BufferGeometry();
+                const particleCount = 2000;
+                const particlePositions = new Float32Array(particleCount * 3);
+                const particleVelocities = new Float32Array(particleCount * 3);
+
+                for (let i = 0; i < particleCount * 3; i += 3) {
+                    particlePositions[i] = (Math.random() - 0.5) * 80;
+                    particlePositions[i + 1] = (Math.random() - 0.5) * 80;
+                    particlePositions[i + 2] = (Math.random() - 0.5) * 60;
+                    
+                    particleVelocities[i] = (Math.random() - 0.5) * 0.01;
+                    particleVelocities[i + 1] = (Math.random() - 0.5) * 0.01;
+                    particleVelocities[i + 2] = (Math.random() - 0.5) * 0.01;
+                }
+
+                particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+                const particleMaterial = new THREE.PointsMaterial({
+                    color: 0x00ffff,
+                    size: 0.3,
+                    sizeAttenuation: true,
+                    transparent: true,
+                    opacity: 1.0,
+                    emissive: 0x00ffff,
+                    emissiveIntensity: 1.5
+                });
+
+                const particles = new THREE.Points(particleGeometry, particleMaterial);
+                scene.add(particles);
+                threeJsScene.particles = { mesh: particles, velocities: particleVelocities };
+
+                // Enhanced Neon Lighting
+                const light1 = new THREE.PointLight(0x00ffff, 3.5, 200);
+                light1.position.set(30, 30, 30);
+                scene.add(light1);
+
+                const light2 = new THREE.PointLight(0xff00ff, 3.5, 200);
+                light2.position.set(-30, -30, 30);
+                scene.add(light2);
+
+                const light3 = new THREE.PointLight(0x00ff00, 3.0, 180);
+                light3.position.set(0, 40, -20);
+                scene.add(light3);
+
+                const light4 = new THREE.PointLight(0xff0080, 3.0, 180);
+                light4.position.set(-40, 0, -20);
+                scene.add(light4);
+
+                const ambientLight = new THREE.AmbientLight(0x1a1a3f, 0.4);
+                scene.add(ambientLight);
+
+                // Mouse tracking for parallax
+                let mouseX = 0, mouseY = 0;
+                let targetMouseX = 0, targetMouseY = 0;
+                
+                document.addEventListener('mousemove', (e) => {
+                    targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                    targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+                });
+
+                // Animation loop
+                let frameCount = 0;
+                function animate() {
+                    requestAnimationFrame(animate);
+
+                    if (!threeJsEnabled) {
+                        renderer.render(scene, camera);
+                        return;
+                    }
+
+                    frameCount++;
+                    
+                    // Smooth mouse movement
+                    mouseX += (targetMouseX - mouseX) * 0.1;
+                    mouseY += (targetMouseY - mouseY) * 0.1;
+
+                    // Update particles
+                    const posAttr = threeJsScene.particles.mesh.geometry.getAttribute('position');
+                    const positions = posAttr.array;
+                    const velocities = threeJsScene.particles.velocities;
+
+                    for (let i = 0; i < positions.length; i += 3) {
+                        positions[i] += velocities[i];
+                        positions[i + 1] += velocities[i + 1];
+                        positions[i + 2] += velocities[i + 2];
+
+                        if (positions[i] > 40) positions[i] = -40;
+                        if (positions[i] < -40) positions[i] = 40;
+                        if (positions[i + 1] > 40) positions[i + 1] = -40;
+                        if (positions[i + 1] < -40) positions[i + 1] = 40;
+                        if (positions[i + 2] > 30) positions[i + 2] = -30;
+                        if (positions[i + 2] < -30) positions[i + 2] = 30;
+                    }
+                    posAttr.needsUpdate = true;
+
+                    // Dynamic lighting movement
+                    scene.children.forEach((light, idx) => {
+                        if (light.isPointLight) {
+                            light.position.x += Math.sin(frameCount * 0.002 + idx) * 0.03;
+                            light.position.y += Math.cos(frameCount * 0.002 + idx) * 0.03;
+                        }
+                    });
+
+                    // Mouse parallax with more intensity
+                    camera.position.x = mouseX * 5;
+                    camera.position.y = mouseY * 5;
+                    camera.position.z = 15 + Math.sin(frameCount * 0.003) * 2;
+                    camera.lookAt(0, 0, 0);
+
+                    renderer.render(scene, camera);
+                }
+
+                animate();
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(width, height);
+                });
+            }
+
+            function removeThreeJsBackground() {
+                if (!threeJsScene) return;
+                
+                const canvas = document.getElementById('three-js-bg');
+                if (canvas) canvas.remove();
+                const overlayEl = document.getElementById('bg-blur-overlay');
+                if (overlayEl) overlayEl.remove();
+                
+                threeJsScene.scene.traverse(obj => {
+                    if (obj.geometry) obj.geometry.dispose();
+                    if (obj.material) {
+                        if (Array.isArray(obj.material)) {
+                            obj.material.forEach(m => m.dispose());
+                        } else {
+                            obj.material.dispose();
+                        }
+                    }
+                });
+                
+                threeJsScene.renderer.dispose();
+                threeJsScene = null;
+            }
+
+            // F1 key to toggle 3D background. First press initializes + enables it.
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F1') {
+                    e.preventDefault();
+                    if (threeJsScene) {
+                        threeJsEnabled = !threeJsEnabled;
+                        const canvasEl = document.getElementById('three-js-bg');
+                        const overlayEl = document.getElementById('bg-blur-overlay');
+                        if (canvasEl) canvasEl.style.display = threeJsEnabled ? 'block' : 'none';
+                        if (overlayEl) overlayEl.style.display = threeJsEnabled ? 'block' : 'none';
+                    } else {
+                        // Initialize and enable on first toggle
+                        initThreeJsBackground();
+                        threeJsEnabled = true;
+                    }
+                }
+            });
         });
     </script>
+
+    <!-- Load Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </body>
 </html>
